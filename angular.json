@@ -94,6 +94,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "University_Management_System:build:production",
+            "firebaseProject": "cse379-project-ums",
+            "firebaseHostingSite": "cse379-project-ums"
+          }
         }
       }
     }

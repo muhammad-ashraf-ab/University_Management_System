@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "cse379-project-ums": {
+      "hosting": {
+        "University_Management_System": [
+          "cse379-project-ums"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "cse379-project-ums"
+  }
+}
