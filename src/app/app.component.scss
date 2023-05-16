@@ -1,0 +1,23 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+span {
+    padding: 1rem;
+}
+
+mat-sidename-container {
+    height: 100%;
+}
+
+mat-sidenav, mat-sidenav-content {
+    padding: 16px;
+}
+
+mat-sidenav-content {
+    height: 100%;
+}
+
+mat-sidenav {
+    width: 200px;
+}

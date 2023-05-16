@@ -1,4 +1,28 @@
 <mat-toolbar color="primary">
+  <span>
+    <button mat-icon-button (click)="opened=!opened">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </span>
+  <span class="spacer"></span>
   <span>🍉 Management System</span>
+  <span class="spacer"></span>
+  <span>
+    <button mat-icon-button routerLink="/login">
+      <mat-icon>login</mat-icon>
+    </button>
+  </span>
 </mat-toolbar>
-<router-outlet></router-outlet>
+
+<mat-sidenav-container>
+  <mat-sidenav [(opened)]="opened" mode="side">
+    <mat-list>
+      <mat-list-item><a>Dashboard</a></mat-list-item>
+      <mat-list-item><a>Courses</a></mat-list-item>
+      <mat-list-item *ngIf="student"><a>Grades</a></mat-list-item>
+    </mat-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

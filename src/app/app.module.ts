@@ -9,10 +9,18 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { provideDatabase,getDatabase } from '@angular/fire/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { LoginComponent } from './login/login.component';
+import { FormsModule } from '@angular/forms';
+import { AuthenticationService } from './authentication.service';
+import { HomeComponent } from './home/home.component';
+
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -21,9 +29,11 @@ import { MaterialModule } from './material/material.module';
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [AuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
