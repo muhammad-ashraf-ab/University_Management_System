@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AuthenticationService } from '../authentication.service';
+import { MaterialModule } from '../material/material.module';
+import { FormControl, Validators } from '@angular/forms';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -10,6 +13,8 @@ export class LoginComponent implements OnInit{
 
   userEmail: string = '';
   userPass: string = '';
+  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+  passFormControl = new FormControl('', [Validators.required]);
   
   constructor(private router: Router, private authService: AuthenticationService){
     

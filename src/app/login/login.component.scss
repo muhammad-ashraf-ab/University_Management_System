@@ -1,11 +1,21 @@
-.loginFormInputText{
-    border: 3px solid black;
-    border-radius: 5px;
-    height: 45px;
-    width: 450px;
+.loginFormInputField{
+    width: 300px;
+    margin-left: 75px;
+    margin-right: 75px;
+    margin-top: 25px;
 }
 
 .loginFormInputSubmit{
     height: 45px;
+    width: 350px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.authForm{
     width: 450px;
+    height: 300px;
+    margin: auto;
+    justify-content: center;
+    background-color: #40bdbd88;
 }

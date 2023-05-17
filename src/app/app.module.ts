@@ -8,8 +8,9 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { MatInputModule } from '@angular/material/input'
 import { LoginComponent } from './login/login.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthenticationService } from './authentication.service';
 import { HomeComponent } from './home/home.component';
 
@@ -31,9 +32,12 @@ import { HttpClientModule } from '@angular/common/http';
     provideDatabase(() => getDatabase()),
     BrowserAnimationsModule,
     MaterialModule,
+    MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule
   ],
+  exports:[MatInputModule],
   providers: [AuthenticationService, ], //DO NOT REMOVE THE EXTRA COMMA INSIDE THIS LIST, THE WHOLE THING WILL CRASH.
   bootstrap: [AppComponent]
 })

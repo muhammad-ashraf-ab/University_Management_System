@@ -14,8 +14,8 @@
   </span>
 </mat-toolbar>
 
-<mat-sidenav-container>
-  <mat-sidenav [(opened)]="opened" mode="side">
+<mat-sidenav-container hasBackdrop="true">
+  <mat-sidenav [(opened)]="opened" mode="over">
     <mat-list>
       <mat-list-item><a>Dashboard</a></mat-list-item>
       <mat-list-item><a>Courses</a></mat-list-item>
@@ -26,3 +26,4 @@
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
