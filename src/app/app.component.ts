@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
+import { Router } from '@angular/router';
+import { AuthGuardService } from './auth-guard.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,9 +10,13 @@ import { AuthenticationService } from './authentication.service';
 export class AppComponent {
   title = 'University_Management_System';
 
-  constructor(private authService: AuthenticationService){
+  constructor(private authService: AuthenticationService, private authGuardService: AuthGuardService, protected router: Router){
     
   }
   opened = false;
   student = true;
+  
+  logout() {
+    this.authService.logout();
+  }
 }

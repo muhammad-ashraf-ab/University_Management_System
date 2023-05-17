@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AuthenticationService } from '../authentication.service';
 import { MaterialModule } from '../material/material.module';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -11,10 +11,10 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit{
 
-  userEmail: string = '';
-  userPass: string = '';
-  emailFormControl = new FormControl('', [Validators.required, Validators.email]);
-  passFormControl = new FormControl('', [Validators.required]);
+  loginForm = new FormGroup({
+    emailFormControl: new FormControl('', [Validators.required, Validators.email]),
+    passwordFormControl: new FormControl('', [Validators.required]),
+  })
   
   constructor(private router: Router, private authService: AuthenticationService){
     
@@ -23,6 +23,8 @@ export class LoginComponent implements OnInit{
     this.authService.loggedIn().subscribe(logState => {
       if(logState){
         this.router.navigate(['home'])
+      } else {
+        this.router.navigate(['login'])
       }
     })
   }
@@ -32,13 +34,14 @@ export class LoginComponent implements OnInit{
     // take pass
     // pass to service
     // where serivce?
-    // email = 123
-    // pass = 321
-    if(this.userEmail != '' && this.userPass != ''){
-      // console.log(this.userEmail + "/" + this.userPass)
-      this.authService.checkAuthUser(this.userEmail, this.userPass)
+    // email = 123@321.com
+    // pass = 123321
+    let userEmail = this.loginForm.value.emailFormControl;
+    let userPass = this.loginForm.value.passwordFormControl;
+    if(userEmail != '' && userPass != ''){
+      this.authService.checkAuthUser(userEmail!, userPass!)
     }
-    this.router.navigate(['home'])
+    // this.router.navigate(['home'])
   }
 
 }

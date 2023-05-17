@@ -31,19 +31,10 @@ export class AuthenticationService {
     //   console.log(errorCode)
     //   console.log(errorMessage)
     // })
-    // console.log('AAAAAA')
-    // let data = [
-    //   new User('Adel', 'ed.gaia@ymail.com', '123321'),
-    //   new User('Muhammad', 'modogogo2000@gmail.com', '123321')
-    // ]
-    // this.httpClient.post(dbLink + "/users.json", data).subscribe(event =>{
-    //   console.log(event)
-    // })
-    // console.log('I requested :(')
+
   }
   // Dummy holder function till we make login through firebase!
   checkAuthUser(email: string, pass: string){
-
     signInWithEmailAndPassword(this.firebaseAuth, email, pass)
     .then((userCredentials) =>{
       // Signed in!
@@ -66,10 +57,14 @@ export class AuthenticationService {
   loggedIn(): Observable<boolean>{
     return this.userLogState
   }
+
+  logout() {
+    this.userLogState.next(false);
+  }
 }
 
 class User{
-  constructor(private name: String, private email: String, private pass: String){}
+  constructor(private name: string, private email: string, private pass: string, private perm: number){}
 }
 
 

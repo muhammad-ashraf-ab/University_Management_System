@@ -1,21 +1,18 @@
 .loginFormInputField{
-    width: 300px;
-    margin-left: 75px;
-    margin-right: 75px;
-    margin-top: 25px;
+    width: auto;
+    margin: 8px;
 }
 
 .loginFormInputSubmit{
     height: 45px;
-    width: 350px;
-    margin-left: 50px;
-    margin-right: 50px;
+    width: auto;
+    margin: 8px;
 }
 
 .authForm{
-    width: 450px;
-    height: 300px;
+    width: 30%;
+    height: fit-content;
+    padding: 64px;
     margin: auto;
     justify-content: center;
-    background-color: #40bdbd88;
 }
