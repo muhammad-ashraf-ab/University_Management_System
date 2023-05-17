@@ -1,10 +1,18 @@
-<mat-grid-list cols="3" rowHeight="100px" gutterSize="32px">
-    <mat-grid-tile>
+<p class="mat-h1" style="margin: 16px;">Recent Courses</p>
+
+
+<p class="mat-h1" style="margin: 16px;">All Courses</p>
+<mat-grid-list cols="3" rowHeight="100px" gutterSize="32px" *ngIf="courses.length > 0">
+    <mat-grid-tile *ngFor="let course of courses">
         <mat-card>
-            <p class="mat-h2 courseId">CSE379</p>
-            <p class="mat-h4 courseName">Human Computer Interaction</p>
-            <p class="mat-h4 semester">Spring 2023</p>
-            <p class="mat-h4 grade">A+</p>
+            <p class="mat-h2 courseId">{{course.getCid()}}</p>
+            <p class="mat-h4 courseName">{{course.getCname()}}</p>
+            <p class="mat-h4 semester">{{course.getSem()}}</p>
+            <p class="mat-h4 grade">{{course.getGrade()}}</p>
         </mat-card>
     </mat-grid-tile>
 </mat-grid-list>
+
+<p class="mat-h2" *ngIf="courses.length < 1" style="text-align: center;">
+No courses available. Make sure to <b><a routerLink="/register" id="registerCourses">register</a></b> courses before deadline!
+</p>

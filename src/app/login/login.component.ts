@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { AuthenticationService } from '../authentication.service';
 import { DbAccessService } from '../db-access.service';
+import { DummyFillerService } from '../dummy-filler.service'
 import { MaterialModule } from '../material/material.module';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -17,7 +18,12 @@ export class LoginComponent implements OnInit{
     passwordFormControl: new FormControl('', [Validators.required]),
   })
   
-  constructor(private router: Router, private authService: AuthenticationService, private dbService: DbAccessService){
+  constructor(
+    private router: Router, 
+    private authService: AuthenticationService, 
+    private dbService: DbAccessService,
+    private dfService: DummyFillerService,
+    ){
     
   }
   ngOnInit(): void {

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AuthenticationService } from './authentication.service'
 import { HttpClient } from '@angular/common/http';
 import { User } from '@angular/fire/auth';
+import { Observable, Subject, of, pipe } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 const dbLink = "https://cse379-project-ums-default-rtdb.europe-west1.firebasedatabase.app"
 
@@ -22,30 +24,49 @@ export class DbAccessService {
 
 
   //////////////////////////////////////////////////////    STUDENT    //////////////////////////////////////////////////////
-  addCourses(user: User, courses: studentCourseData[]){
+  addCourses(user: User, courses: StudCourseData[]){
     for(let course of courses){
 
       this.httpClient.put(dbLink + "/students/" + user.uid + "/courses/" + course.getCid() + ".json", course).subscribe((event) =>{
         console.log(event)
       })
     }
-    // this.httpClient.put(dbLink + "/users/" + user.uid + "/grades.json", courses).subscribe((event) =>{
-    //   console.log(event)
-    // })
   }
 
   putStudent(user: User){
-    let data = new studentData(user.email)
+    let data = new StudData(user.email)
     // console.log("aaaaa")
     this.httpClient.put(dbLink + "/students/" + user.uid + ".json", data).subscribe((event) =>{
       console.log(event)
     })
+  }
 
+  fetchCurrStudentCourses() {
+    let currUser = this.authService.currUser()
+    return this.httpClient.get <{ [key: string]: StudCourseData }> (dbLink + "/students/" + currUser.uid + "/courses.json")
+    .pipe(map(responseData =>{
+      let res: StudCourseData[] = []
+
+      for(let key in responseData){
+        res.push(
+          new StudCourseData(
+            key, 
+            responseData[key]['grade'], 
+            responseData[key]['sem'], 
+            responseData[key]['courseName'], 
+            responseData[key]['live']
+          )
+        )
+      }
+      return res
+    }))
+    // there isn't even a return type lmao?....fucked, this is so.
+    // eksdee
   }
 
   fetchStudents(){
     this.httpClient.get(dbLink + "/students.json").subscribe(userList =>{
-      console.log(userList)
+      // console.log(userList)
     })
   }
   
@@ -57,10 +78,76 @@ export class DbAccessService {
   //////////////////////////////////////////////////////    INSTRUC    //////////////////////////////////////////////////////
 
   putInstructor(user: User){
-    let data = new instructorData('DummyInstId', 'DummyInstName', user.email)
+    let data = new InstData('DummyInstId', 'DummyInstName', user.email)
     // console.log("aaaaa")
     this.httpClient.put(dbLink + "/instructors/" + user.uid + ".json", data).subscribe((event) =>{
-      console.log(event)
+      // console.log(event)
+    })
+  }
+
+  fetchCurrInstCourses(){
+    let user = this.authService.currUser()
+    return this.httpClient.get <{ [key: string]: InstCourseData }> (dbLink + "/instructors/" + user.uid + "/courses.json")
+    .pipe(map(responseData =>{
+      let res: InstCourseData[] = []
+
+      for(let key in responseData){
+        res.push(
+          new InstCourseData(
+            responseData[key]['courseId'],
+            responseData[key]['courseName']
+          )
+        )
+      }
+      return res
+    }))
+
+    // there isn't even a return type lmao?....fucked, this is so.
+    // eksdee
+  }
+
+  
+  fetchCurrInstCoursesDetailed(): Observable<CourseData[]>{
+    let user = this.authService.currUser()
+    let myObservable = new Subject<CourseData[]>()
+    this.fetchCurrInstCourses().subscribe((courses) =>{
+
+      let courseList: CourseData[] = []
+      for(let myCourse in courses){
+        this.httpClient.get <{  [key: string]: CourseData }> (dbLink + "/courses/" + courses[myCourse].getCid() + ".json")
+        .pipe(map(responseData =>{
+          let res: CourseData[] = []
+
+          for(let key in responseData){
+            res.push(
+              new CourseData(
+                key,
+                responseData[key]['courseName'],
+                responseData[key]['sems']
+              )
+            )
+          }
+          return res
+        }))
+        .subscribe((course) =>{
+          courseList.push.apply(courseList, course)
+          if(courseList.length >= courses.length){
+            myObservable.next(courseList)
+          }
+        })
+      }
+      
+    })
+    return myObservable
+  }
+
+  addCourseToInstCurr(courseList: InstCourseData[]){
+    let user = this.authService.currUser()
+    this.httpClient.put(dbLink + "/instructors/" + user.uid + "/courses.json", courseList).subscribe((event) =>{
+      // console.log(event)
+    },
+    (error) =>{
+      console.log(error)
     })
   }
 
@@ -71,16 +158,16 @@ export class DbAccessService {
   
   //////////////////////////////////////////////////////    COURSES    //////////////////////////////////////////////////////
 
-  putCourse(course: courseData){
+  putCourse(course: CourseData){
     this.httpClient.put(dbLink + "/courses/" + course.getCid() + ".json", course).subscribe((event) =>{
-      console.log(event)
+      // console.log(event)
     })
   }
 
   //////////////////////////////////////////////////////    COURSES    //////////////////////////////////////////////////////
 }
 
-export class studentData{
+export class StudData{
   private stuId: string = '┬─┬ノ( º _ ºノ)'
   private name: string = '(╯°□°)╯︵ ┻━┻'
   constructor(
@@ -93,7 +180,7 @@ export class studentData{
   }
 }
 
-export class studentCourseData{
+export class StudCourseData{
   constructor(
     private courseId: string, 
     private grade: string, 
@@ -119,7 +206,7 @@ export class studentCourseData{
   
 }
 
-export class instructorData{
+export class InstData{
   constructor(
     private instId: string, 
     private name: string, 
@@ -147,12 +234,10 @@ export class instructorData{
   }
 }
 
-export class courseData{
-
+export class InstCourseData{
   constructor(
-    private courseId: string = 'DummyCourseId',
-    private courseName: string = 'DummyCourseName',
-    private sems: semester[] = []
+    private courseId: string,
+    private courseName: string
   ){}
 
   getCid(): string{
@@ -161,11 +246,27 @@ export class courseData{
   getCname(): string{
     return this.courseName
   }
-  getSems(): semester[]{
+}
+
+export class CourseData{
+
+  constructor(
+    private courseId: string = 'DummyCourseId',
+    private courseName: string = 'DummyCourseName',
+    private sems: Semester[] = []
+  ){}
+
+  getCid(): string{
+    return this.courseId
+  }
+  getCname(): string{
+    return this.courseName
+  }
+  getSems(): Semester[]{
     return this.sems
   }
 
-  addSems(sems: semester[]){
+  addSems(sems: Semester[]){
     for(let sem of sems){
       this.sems.push(sem)
     }
@@ -173,7 +274,7 @@ export class courseData{
 
 }
 
-export class semester{
+export class Semester{
   
   private studentList: string[] = []
   constructor(

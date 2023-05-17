@@ -1,6 +1,6 @@
 <form style="width: 100%" (ngSubmit)="authSubmit()" [formGroup]="loginForm">
     <mat-card class="authForm">
-        <mat-form-field class="loginFormInputField">
+        <mat-form-field class="loginFormInputField" hideRequiredMarker>
             <mat-label>Email</mat-label>
             <input type="email" matInput formControlName="emailFormControl" placeholder="example@example.com">
             <mat-error *ngIf="loginForm.controls.emailFormControl.hasError('email') && !loginForm.controls.emailFormControl.hasError('required')">

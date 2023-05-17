@@ -34,6 +34,18 @@ export class AuthenticationService {
 
   }
   
+  register(email: string, pass: string){
+    createUserWithEmailAndPassword(this.firebaseAuth, email, pass).then((userCredential) =>{
+      const user = userCredential.user
+    })
+    .catch((error) =>{
+      const errorCode = error.code
+      const errorMessage = error.message
+      console.log(errorCode)
+      console.log(errorMessage)
+    })
+  }
+
   checkAuthUser(email: string, pass: string){
     signInWithEmailAndPassword(this.firebaseAuth, email, pass)
     .then((userCredentials) =>{
@@ -47,9 +59,11 @@ export class AuthenticationService {
     .catch((error) =>{
       const errorCode = error.code
       if(errorCode == 'auth/invalid-email'){
-        console.log("No such email sir!")
+        console.log("Email is literally wrong dude..")
       }else if(errorCode == 'auth/wrong-password'){
         console.log("Ya 7ramy yabnel kalb")
+      }else if(errorCode == 'auth/user-not-found'){
+        console.log('User isn\'t registered sadly :(')
       }
       this.userLogState.next(false)
       this.currFullUser = {} as User

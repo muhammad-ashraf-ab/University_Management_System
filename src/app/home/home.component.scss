@@ -3,6 +3,12 @@ mat-card {
     width: calc(100% - 5px);
     height: calc(100% - 5px);
     color: #303030;
+    transition: all 0.25s ease-in;
+}
+
+mat-card:hover {
+    background-color: #C0C0C0;
+    cursor: pointer;
 }
 
 .courseId {
@@ -35,4 +41,21 @@ mat-card {
     right: 0;
     text-align: right;
     margin: 16px;
+}
+
+#registerCourses {
+    text-decoration: none;
+    transition: all 0.25s ease-in;
+}
+#registerCourses:link {
+    color: inherit;
+}
+#registerCourses:visited {
+    color: inherit;
+}
+#registerCourses:hover {
+    color: #FF4081;
+}
+#registerCourses:active {
+    color: #FF0055;
 }
