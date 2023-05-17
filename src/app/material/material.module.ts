@@ -6,6 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 const MaterialComponents = [
   MatToolbarModule,
@@ -14,7 +15,8 @@ const MaterialComponents = [
   MatSidenavModule,
   MatListModule,
   MatCardModule,
-  MatGridListModule
+  MatGridListModule,
+  ScrollingModule
 ];
 
 @NgModule({

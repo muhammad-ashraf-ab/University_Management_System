@@ -1,17 +1,25 @@
 <mat-toolbar color="primary">
-  <span>
+  <div class="toolbar-left">
     <button mat-icon-button (click)="opened=!opened" *ngIf="router.url != '/login'">
       <mat-icon>menu</mat-icon>
     </button>
-  </span>
-  <span class="spacer"></span>
-  <span>🍉 Management System</span>
-  <span class="spacer"></span>
-  <span>
-    <button mat-icon-button routerLink="/login" *ngIf="router.url != '/login'">
-      <mat-icon>login</mat-icon>
-    </button>
-  </span>
+  </div>
+  <div class="title-container">
+    <span class="title">🍉 Management System</span>
+  </div>
+  <div class="toolbar-right" *ngIf="router.url != '/login'">
+    <span>
+      <p class="mat-subtitle-2" style="margin-bottom: 0;">Ahmed Mohamed Mahmoud Mostafa</p>
+    </span>
+    <span>
+      <p class="mat-subtitle-2" style="margin-bottom: 0;">18P****</p>
+    </span>
+    <span>
+      <button mat-icon-button routerLink="/login">
+        <mat-icon>login</mat-icon>
+      </button>
+    </span>
+  </div>
 </mat-toolbar>
 
 <mat-sidenav-container hasBackdrop="false">
@@ -27,6 +35,8 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <router-outlet></router-outlet>
+    <div style="width: 80%; margin: auto;">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -15,6 +15,7 @@ import { AuthenticationService } from './authentication.service';
 import { HomeComponent } from './home/home.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import { CourseComponent } from './course/course.component';
 
 
 
@@ -22,7 +23,8 @@ import { HttpClientModule } from '@angular/common/http';
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    CourseComponent
   ],
   imports: [
     BrowserModule,

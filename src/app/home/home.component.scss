@@ -25,6 +25,10 @@ mat-card:hover {
     left: 0;
     text-align: left;
     margin: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
 .semester {
@@ -58,4 +62,30 @@ mat-card:hover {
 }
 #registerCourses:active {
     color: #FF0055;
+}
+
+.scrollableWindow {
+    height: fit-content;
+    margin: auto;
+    display: flex;
+    justify-content:left;
+}
+
+.section {
+    margin: 8px;
+    overflow-x: auto;
+}
+
+.items-container {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.scrollableCard {
+    min-width: 300px;
+    margin: 8px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    overflow: hidden;
 }

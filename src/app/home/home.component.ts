@@ -69,12 +69,26 @@ export class HomeComponent implements OnInit{
       this.dbService.fetchCurrStudentCourses().subscribe((courses) =>{
         // console.log(courses)
         this.courses = courses
+        this.recents = courses
       },
       (error) =>{
         console.log(error)
       })
     }
     
+  }
+
+
+  //post the grade of a student as an inst
+  postGrade(){
+    if (this.dfService.isInst(this.authService.currUser().email)){
+      let myGrade: string = 'A+' // the variable that takes the grade
+      let studId: string = 'dummyStudId'
+      let courseId: string = 'CSE379'
+      this.dbService.editGrade(studId, courseId, myGrade)
+    }else{
+      //prohibited!
+    }
   }
 
 }

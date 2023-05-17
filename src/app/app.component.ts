@@ -8,11 +8,13 @@ import { AuthGuardService } from './auth-guard.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'University_Management_System';
+  username: string = '';
+  userId: string = '';
 
   constructor(private authService: AuthenticationService, private authGuardService: AuthGuardService, protected router: Router){
     
   }
+  
   opened = false;
   student = true;
   

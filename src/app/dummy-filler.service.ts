@@ -37,8 +37,13 @@ export class DummyFillerService {
   dummyStudCourseFillCurrent(){
     const addedCourses: StudCourseData[] = [
       new StudCourseData('CSE311', 'A', 'Fall 2021', 'Course A'), 
-      new StudCourseData('CSE111', 'B', 'Spring 2022', 'Course B'), 
-      new StudCourseData('ASU101', 'C', 'Summer 2020', 'Course C')
+      new StudCourseData('CSE111', 'B', 'Spring 2022', 'Logic Design'), 
+      new StudCourseData('ASU101', 'C', 'Summer 2020', 'Course C'),
+      new StudCourseData('CSE379', 'A', 'Spring 2023', 'Human Computer Interaction'), 
+      new StudCourseData('ASU112', 'B', 'Summer 2022', 'Report Writing & Communication skills'), 
+      new StudCourseData('ASU113', 'C', 'Fall 2021', 'Professional Ethics and Legislation'),
+      new StudCourseData('ASU114', 'B', 'Summer 2018', 'Selected Topics in Contemporary Issues'), 
+      new StudCourseData('CSE341', 'C', 'Summer 2021', 'Course D'),
     ]
 
     this.dbService.addCourses(this.authService.currUser(), addedCourses)

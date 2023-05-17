@@ -1,8 +1,20 @@
 <p class="mat-h1" style="margin: 16px;">Recent Courses</p>
 
+<div class="scrollableWindow">
+    <div class="section">
+        <div class="items-container" style="width: 100%;">
+            <mat-card class="scrollableCard" *ngFor="let course of recents" style="height: 100px; width: 300px;">
+                <p class="mat-h2 courseId">{{course.getCid()}}</p>
+                <p class="mat-h4 courseName">{{course.getCname()}}</p>
+                <p class="mat-h4 semester">{{course.getSem()}}</p>
+                <p class="mat-h4 grade">{{course.getGrade()}}</p>
+            </mat-card>
+        </div>
+    </div>
+</div>
 
 <p class="mat-h1" style="margin: 16px;">All Courses</p>
-<mat-grid-list cols="3" rowHeight="100px" gutterSize="32px" *ngIf="courses.length > 0">
+<mat-grid-list cols="3" rowHeight="100px" gutterSize="32px" *ngIf="courses.length > 0" style="margin: 16px;">
     <mat-grid-tile *ngFor="let course of courses">
         <mat-card>
             <p class="mat-h2 courseId">{{course.getCid()}}</p>

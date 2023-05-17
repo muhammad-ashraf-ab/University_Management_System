@@ -30,3 +30,31 @@ mat-sidenav {
     justify-content: start;
     color: #F44336;
 }
+
+mat-toolbar {
+    position: relative;
+  }
+
+.title-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-right: 80px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.toolbar-left,
+.toolbar-right {
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+}
+
+.toolbar-right {
+    position: absolute;
+    right: 0;
+}
