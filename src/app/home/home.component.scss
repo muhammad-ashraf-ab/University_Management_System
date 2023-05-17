@@ -1,0 +1,38 @@
+mat-card {
+    // background-color: #95A0DA;
+    width: calc(100% - 5px);
+    height: calc(100% - 5px);
+    color: #303030;
+}
+
+.courseId {
+    position: absolute;
+    top: 0;
+    left: 0;
+    text-align: left;
+    margin: 16px;
+}
+
+.courseName {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    text-align: left;
+    margin: 16px;
+}
+
+.semester {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: right;
+    margin: 16px;
+}
+
+.grade {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    text-align: right;
+    margin: 16px;
+}

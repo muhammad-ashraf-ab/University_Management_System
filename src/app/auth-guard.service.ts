@@ -11,10 +11,10 @@ export class AuthGuardService{
   userLogState = false
 
   constructor(private authService: AuthenticationService, private router: Router) {
-    console.log("I was constructed")
+    // console.log("I was constructed")
     this.authService.loggedIn().subscribe(logState => {
       this.userLogState = logState
-      console.log("Subscriber says " + logState)
+      // console.log("Subscriber says " + logState)
       if(logState){
         this.router.navigate(['home'])
       }
@@ -24,7 +24,7 @@ export class AuthGuardService{
 
 
   canActivate(): boolean{
-    console.log(this.userLogState)
+    // console.log(this.userLogState)
     return this.userLogState
   }
 
