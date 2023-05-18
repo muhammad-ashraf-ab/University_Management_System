@@ -1,12 +1,14 @@
 import { Injectable} from '@angular/core';
-import { DbAccessService, CourseData, Semester, StudCourseData, InstCourseData} from './db-access.service'
+import { DbAccessService, CourseData, Semester, StudCourseData, InstCourseData, CourseStudData} from './db-access.service'
 import { AuthenticationService} from './authentication.service'
 @Injectable({
   providedIn: 'root'
 })
 export class DummyFillerService {
 
-  constructor(private dbService: DbAccessService, private authService: AuthenticationService) { }
+  constructor(private dbService: DbAccessService, private authService: AuthenticationService) { 
+    // this.dummyCourseFillTwo()
+  }
 
 
   dummerRegisterInst(){
@@ -20,14 +22,53 @@ export class DummyFillerService {
 
   dummyCourseFillTwo(){
 
-    let course = new CourseData()
-    let sem = new Semester()
-    course.addSems([sem])
-    let stu1 = "studentId1"
-    let stu2 = "studentId2"
-    let stuL = [stu1, stu2]
-    sem.addSL(stuL)
-    this.dbService.putCourse(course)
+    let course1 = new CourseData('CSE311', 'Course A') 
+    let course2 = new CourseData('CSE111', 'Course B')
+    let course3 = new CourseData('ASU101', 'Course C')
+    
+    let sem11 = new Semester('Fall 2019')
+    let sem12 = new Semester('Fall 2020')
+    let sem13 = new Semester('Fall 2021')
+    let sem21 = new Semester('Spring 2020')
+    let sem22 = new Semester('Spring 2022')
+    let sem31 = new Semester('Summer 2022')
+    course1.addSems([sem11, sem12, sem13])
+    course2.addSems([sem21, sem22])
+    course3.addSems([sem31])
+    
+    let stu111 = new CourseStudData('108', 'Lotfy', 'B')
+    let stu112 = new CourseStudData('109', 'Salama', 'C')
+    let stu113 = new CourseStudData('101', 'Adel', 'A')
+    let stu114 = new CourseStudData('110', 'Ashraf', 'A-')
+    let stu121 = new CourseStudData('111', 'Ahmed', 'B+')
+    let stu122 = new CourseStudData('112', 'Ahmad', 'A+')
+    let stu123 = new CourseStudData('113', 'Mohamed', 'C-')
+    let stu131 = new CourseStudData('114', 'Muhammad', 'A+')
+    let stu132 = new CourseStudData('115', 'Mohammad', 'D')
+    let stu211 = new CourseStudData('116', 'Mostafa', 'F')
+    let stu221 = new CourseStudData('117', 'Omar', 'C+')
+    let stu311 = new CourseStudData('118', 'Kareem', 'B-')
+    let stu312 = new CourseStudData('119', 'Amr', 'C')
+    sem11.addSL([stu111, stu112, stu113, stu114])
+    sem12.addSL([stu121, stu122, stu123])
+    sem13.addSL([stu131, stu132])
+    sem21.addSL([stu211])
+    sem22.addSL([stu221])
+    sem31.addSL([stu311, stu312])
+
+    this.dbService.putCourse(course1)
+    this.dbService.putCourse(course2)
+    this.dbService.putCourse(course3)
+    
+
+    // let course = new CourseData('CSE346', 'Course 346')
+    // let sem = new Semester('Fall 2011')
+    // course.addSems([sem])
+    // let stu1 = new CourseStudData('108', 'Lotfy', 'B')
+    // let stu2 = new CourseStudData('109', 'Salama', 'C')
+    // let stuL = [stu1, stu2]
+    // sem.addSL(stuL)
+    // this.dbService.putCourse(course)
   }
 
   dummyStudFillCurrent(){

@@ -89,6 +89,7 @@ export class AuthenticationService {
 
   logout(): boolean {
     this.userLogState.next(false);
+    this.currFullUser = null;
     return true
   }
 

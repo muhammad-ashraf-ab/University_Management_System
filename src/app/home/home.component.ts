@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router'
 import { AuthenticationService } from '../authentication.service'
 import { DummyFillerService } from '../dummy-filler.service'
-import { DbAccessService, StudCourseData, CourseData, Semester, StudData, InstData} from '../db-access.service'
+import { DbAccessService, StudCourseData, CourseData, Semester, StudData, InstData, InstCourseData, CourseInstData} from '../db-access.service'
 import { User } from '@angular/fire/auth'
 
 
@@ -13,15 +13,21 @@ import { User } from '@angular/fire/auth'
 })
 export class HomeComponent implements OnInit{
 
-  courses: StudCourseData[] = []
-  recents: StudCourseData[] = []
+  courses: StudCourseData[] = [];
+  recents: StudCourseData[] = [];
+  student: boolean = true;
+  instCourses: CourseInstData[] = [];
+
+  displayedInstCoursesColumns: string[] = ['courseId', 'courseName', 'semester', 'noOfStudents'];
+  dataSource = this.instCourses;
 
   constructor (
     private router: Router, 
     private route: ActivatedRoute, 
     private authService: AuthenticationService, 
     private dbService: DbAccessService,
-    private dfService: DummyFillerService
+    private dfService: DummyFillerService,
+    private cdr: ChangeDetectorRef
     ){
     
   }
@@ -38,14 +44,22 @@ export class HomeComponent implements OnInit{
         //Instructor!
         // this.dfService.dummyInstFillCurrent()
         // this.dfService.dummyInstCourseFillCurrent()
+        this.student = false;
         this.dbService.fetchCurrInstCoursesDetailed().subscribe((courseList) =>{
+          console.log("Course List")
           console.log(courseList)
+          for (const course of courseList) {
+            const courseInstDataList = this.mapCourseDataToCourseInstData(course);
+            this.instCourses.push(...courseInstDataList);
+          }
+          this.dataSource = this.instCourses;
+          this.cdr.detectChanges();
         })
       }else{
         //User!
         // this.dfService.dummyStudFillCurrent()
         // this.dfService.dummyStudCourseFillCurrent()
-
+        this.student = true;
       }
       this.getMyCourses()
       // this.dfService.dummyCourseFillTwo()
@@ -91,6 +105,21 @@ export class HomeComponent implements OnInit{
     }else{
       //prohibited!
     }
+  }
+
+  mapCourseDataToCourseInstData(courseData: CourseData): CourseInstData[] {
+    const courseInstDataList: CourseInstData[] = [];
+    const semesters = courseData.getSems();
+    for (const semester of semesters) {
+      const courseInstData: CourseInstData = new CourseInstData(
+        courseData.getCid(),
+        courseData.getCname(),
+        semester.name,
+        semester.noOfStudents
+      );
+      courseInstDataList.push(courseInstData);
+    }
+    return courseInstDataList;
   }
 
 }

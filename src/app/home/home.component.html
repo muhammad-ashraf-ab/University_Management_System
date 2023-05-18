@@ -1,30 +1,73 @@
-<p class="mat-h1" style="margin: 16px;">Recent Courses</p>
+<div *ngIf="student">
 
-<div class="scrollableWindow">
-    <div class="section">
-        <div class="items-container" style="width: 100%;">
-            <mat-card class="scrollableCard" *ngFor="let course of recents" (click) = 'gotoCourse(course.getCid())' style="height: 100px; width: 300px;">
+    <p class="mat-h1" style="margin: 16px;">Recent Courses</p>
+
+    <div class="scrollableWindow">
+        <div class="section">
+            <div class="items-container" style="width: 100%;">
+                <mat-card class="scrollableCard" *ngFor="let course of recents" (click) = 'gotoCourse(course.getCid())' style="height: 100px; width: 300px;">
+                    <p class="mat-h2 courseId">{{course.getCid()}}</p>
+                    <p class="mat-h4 courseName">{{course.getCname()}}</p>
+                    <p class="mat-h4 semester">{{course.getSem()}}</p>
+                    <p class="mat-h4 grade">{{course.getGrade()}}</p>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+    <p class="mat-h1" style="margin: 16px;">All Courses</p>
+    <mat-grid-list cols="3" rowHeight="100px" gutterSize="32px" *ngIf="courses.length > 0" style="margin: 16px;">
+        <mat-grid-tile *ngFor="let course of courses">
+            <mat-card (click) = 'gotoCourse(course.getCid())'>
                 <p class="mat-h2 courseId">{{course.getCid()}}</p>
                 <p class="mat-h4 courseName">{{course.getCname()}}</p>
                 <p class="mat-h4 semester">{{course.getSem()}}</p>
                 <p class="mat-h4 grade">{{course.getGrade()}}</p>
             </mat-card>
-        </div>
-    </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+
+    <p class="mat-h2" *ngIf="courses.length < 1" style="text-align: center;">
+    No courses available. Make sure to <b><a routerLink="/register" id="registerCourses">register</a></b> courses before deadline!
+    </p>
+
 </div>
 
-<p class="mat-h1" style="margin: 16px;">All Courses</p>
-<mat-grid-list cols="3" rowHeight="100px" gutterSize="32px" *ngIf="courses.length > 0" style="margin: 16px;">
-    <mat-grid-tile *ngFor="let course of courses">
-        <mat-card (click) = 'gotoCourse(course.getCid())'>
-            <p class="mat-h2 courseId">{{course.getCid()}}</p>
-            <p class="mat-h4 courseName">{{course.getCname()}}</p>
-            <p class="mat-h4 semester">{{course.getSem()}}</p>
-            <p class="mat-h4 grade">{{course.getGrade()}}</p>
-        </mat-card>
-    </mat-grid-tile>
-</mat-grid-list>
+<div *ngIf="!student">
 
-<p class="mat-h2" *ngIf="courses.length < 1" style="text-align: center;">
-No courses available. Make sure to <b><a routerLink="/register" id="registerCourses">register</a></b> courses before deadline!
-</p>
+    <p class="mat-h1" style="margin: 16px;">Courses</p>
+    <table mat-table *ngIf="dataSource.length > 0" [dataSource]="dataSource" class="mat-elevation-z8">
+        
+        <!-- Course Id Column -->
+        <ng-container matColumnDef="courseId">
+            <th mat-header-cell *matHeaderCellDef>Course ID</th>
+            <td mat-cell *matCellDef="let course"> {{ course.courseId }} </td>
+        </ng-container>
+
+        <!-- Course Name Column -->
+        <ng-container matColumnDef="courseName">
+            <th mat-header-cell *matHeaderCellDef>Course Name</th>
+            <td mat-cell *matCellDef="let course"> {{ course.courseName }} </td>
+        </ng-container>
+
+        <!-- Semester Column -->
+        <ng-container matColumnDef="semester">
+            <th mat-header-cell *matHeaderCellDef>Semester</th>
+            <td mat-cell *matCellDef="let course">{{ course.semesterName }}</td>
+        </ng-container>
+
+        <!-- Number of Students Column -->
+        <ng-container matColumnDef="noOfStudents">
+            <th mat-header-cell *matHeaderCellDef>Number of Students</th>
+            <td mat-cell *matCellDef="let course">{{ course.numOfStudents }}</td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedInstCoursesColumns"></tr>
+        <tr
+            mat-row
+            *matRowDef="let row; columns: displayedInstCoursesColumns;"
+            [routerLink]="['/course', row.getCid()]"
+            class="table-row"
+        ></tr>
+    </table>
+</div>

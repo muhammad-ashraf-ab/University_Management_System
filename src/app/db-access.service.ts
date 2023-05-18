@@ -12,7 +12,6 @@ const dbLink = "https://cse379-project-ums-default-rtdb.europe-west1.firebasedat
 })
 export class DbAccessService {
 
-  private userID = 0
   private loggedState = false
 
   constructor(private authService: AuthenticationService, private httpClient: HttpClient) { 
@@ -134,6 +133,7 @@ export class DbAccessService {
             courseList.push(course!)
           }
           if(courses.indexOf(courses[myCourse])+1 >= courses.length){
+            
             myObservable.next(courseList)
           }
         })
@@ -183,7 +183,6 @@ export class DbAccessService {
     // })
   }
   //////////////////////////////////////////////////////    INSTRUC    //////////////////////////////////////////////////////
-
 
 
   
@@ -335,24 +334,63 @@ export class CourseData{
 
 }
 
-export class Semester{
-  
-  private studentList: string[] = []
+export class CourseInstData {
   constructor(
-    private name: string = 'Spring 2022'
+    private courseId: string = 'DummyCourseId',
+    private courseName: string = 'DummyCourseName',
+    private semesterName: string = '',
+    private numOfStudents: number = 0
+  ) {}
+
+  getCid(): string {
+    return this.courseId;
+  }
+  getCname(): string {
+    return this.courseName;
+  }
+
+  getSemName(): string {
+    return this.semesterName;
+  }
+
+  getNoOfStudents(): number {
+    return this.numOfStudents;
+  }
+}
+
+export class CourseStudData{
+
+  constructor(
+    private studId: string,
+    private studName: string,
+    private grade: string
   ){}
+}
 
-  getSL(): string[]{
-    return this.studentList
-  }
-  getName(): string{
-    return this.name
+export class Semester {
+  private studentList: CourseStudData[] = [];
+  public noOfStudents: number = 0
+
+  constructor(
+    public name: string = 'Spring 2022',
+  ) {}
+
+  getSL(): CourseStudData[] {
+    return this.studentList;
   }
 
-  addSL(sl: string[]){
-    for(let studentId of sl){
-      this.studentList.push(studentId)
+  getSemName(): string {
+    return this.name;
+  }
+
+  addSL(sl: CourseStudData[]) {
+    for (let student of sl) {
+      this.studentList.push(student);
     }
+    this.noOfStudents = this.studentList.length
   }
 
+  getNoStud(): number {
+    return this.studentList.length;
+  }
 }

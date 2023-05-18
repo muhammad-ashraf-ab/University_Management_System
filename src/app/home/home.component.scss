@@ -89,3 +89,12 @@ mat-card:hover {
     flex-direction: row;
     overflow: hidden;
 }
+
+table {
+    width: 100%;
+}
+
+.table-row:hover {
+    background-color: #E0E0E0 !important;
+    cursor: pointer;
+}
