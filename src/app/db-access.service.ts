@@ -211,6 +211,22 @@ export class DbAccessService {
     }))
   }
 
+  fetchCourseInst(cid: string){
+    return this.httpClient.get <CourseData> (dbLink + "/courses/" + cid + ".json")
+    .pipe(map(responseData =>{
+      let res: CourseData | undefined
+      if(responseData !== null){
+        res = new CourseData(
+          responseData['courseId'],
+          responseData['courseName'],
+          responseData['sems']
+        )
+      }
+
+      return res
+    }))
+  }
+
   //////////////////////////////////////////////////////    COURSES    //////////////////////////////////////////////////////
 }
 
@@ -368,7 +384,7 @@ export class CourseStudData{
 }
 
 export class Semester {
-  private studentList: CourseStudData[] = [];
+  public studentList: CourseStudData[] = [];
   public noOfStudents: number = 0
 
   constructor(

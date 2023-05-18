@@ -46,6 +46,9 @@ mat-toolbar {
     display: flex;
     align-items: center;
 }
+.title:hover {
+    cursor: pointer;
+}
 
 .toolbar-left,
 .toolbar-right {
