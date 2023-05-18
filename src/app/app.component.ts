@@ -12,9 +12,15 @@ export class AppComponent {
   userId: string = '';
 
   constructor(private authService: AuthenticationService, private authGuardService: AuthGuardService, protected router: Router){
-    
+    authService.loggedIn().subscribe((loggedIn)=>{
+      if (loggedIn) {
+        // Make it get the username & userId
+        this.username = "Ahmed Mohamed Mahmoud Mostafa";
+        this.userId = "18P****"
+      }
+    })
   }
-  
+
   opened = false;
   student = true;
   

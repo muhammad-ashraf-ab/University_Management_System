@@ -14,10 +14,7 @@ export class AuthGuardService{
     // console.log("I was constructed")
     this.authService.loggedIn().subscribe(logState => {
       this.userLogState = logState
-      // console.log("Subscriber says " + logState)
-      if(logState){
-        this.router.navigate(['home'])
-      }
+      console.log("Subscriber says " + logState)
     })
    }
 
@@ -25,7 +22,15 @@ export class AuthGuardService{
 
   canActivate(): boolean{
     // console.log(this.userLogState)
-    return this.userLogState
+    if(this.authService.currUser() !== null){
+      // console.log("AAAA", this.authService.currUser().email)
+      return true
+    }else{
+      // this.router.navigate(['login'])
+      console.log('Malek4 7a2')
+      return false
+    }
+    // return this.userLogState
   }
 
 }

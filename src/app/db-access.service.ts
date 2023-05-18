@@ -34,7 +34,7 @@ export class DbAccessService {
   }
 
   putStudent(user: User){
-    let data = new StudData(user.email)
+    let data = new StudData('newUserId', 'newUserName', user.email)
     // console.log("aaaaa")
     this.httpClient.put(dbLink + "/students/" + user.uid + ".json", data).subscribe((event) =>{
       console.log(event)
@@ -108,30 +108,32 @@ export class DbAccessService {
 
   
   fetchCurrInstCoursesDetailed(): Observable<CourseData[]>{
+    // console.log("Fetching details")
     let user = this.authService.currUser()
     let myObservable = new Subject<CourseData[]>()
     this.fetchCurrInstCourses().subscribe((courses) =>{
 
       let courseList: CourseData[] = []
       for(let myCourse in courses){
-        this.httpClient.get <{  [key: string]: CourseData }> (dbLink + "/courses/" + courses[myCourse].getCid() + ".json")
+        this.httpClient.get <CourseData> (dbLink + "/courses/" + courses[myCourse].getCid() + ".json")
         .pipe(map(responseData =>{
-          let res: CourseData[] = []
-
-          for(let key in responseData){
-            res.push(
-              new CourseData(
-                key,
-                responseData[key]['courseName'],
-                responseData[key]['sems']
-              )
+          let res: CourseData | undefined
+          if(responseData !== null){
+            res = new CourseData(
+              responseData['courseId'],
+              responseData['courseName'],
+              responseData['sems']
             )
           }
+
           return res
         }))
         .subscribe((course) =>{
-          courseList.push.apply(courseList, course)
-          if(courseList.length >= courses.length){
+          if((course !== null) && (course !== undefined)){
+            // console.log("Course ain't null!: ", course)
+            courseList.push(course!)
+          }
+          if(courses.indexOf(courses[myCourse])+1 >= courses.length){
             myObservable.next(courseList)
           }
         })
@@ -151,6 +153,35 @@ export class DbAccessService {
     })
   }
 
+  editGrade(studId: string, courseId: string, grade: string){
+    let data = {'': grade}
+    this.httpClient.get <StudData> (dbLink + "/students/" + studId + ".json")
+    .pipe(map(responseData =>{
+      let res: StudData | undefined
+      if(responseData !== null){
+        res = new StudData(
+          responseData['stuId'],
+          responseData['name'],
+          responseData['email'],
+          responseData['gpa'],
+          responseData['courses']
+        )
+      }
+      return res
+    }))
+    .subscribe((user)=>{
+      user!.editGrade(grade, courseId)
+      this.httpClient.put(dbLink + "/students/" + studId + ".json", user).subscribe((event) =>{
+        console.log(event)
+      })
+    })
+    // this.httpClient.put(dbLink + "/students/" + studId + "/courses/" + courseId + "/grade.json", data).subscribe((event) =>{
+    //   console.log(event)
+    // },
+    // (error)=>{
+    //   console.log(error)
+    // })
+  }
   //////////////////////////////////////////////////////    INSTRUC    //////////////////////////////////////////////////////
 
 
@@ -164,19 +195,45 @@ export class DbAccessService {
     })
   }
 
+  fetchCourse(cid: string){
+    return this.httpClient.get <StudCourseData> (dbLink + "/students/" + this.authService.currUser().uid + "/courses/" + cid + ".json")
+    .pipe(map(responseData =>{
+      let res: StudCourseData | undefined
+      if(responseData !== null){
+        res = new StudCourseData(
+          responseData['courseId'],
+          responseData['grade'], 
+          responseData['sem'], 
+          responseData['courseName'], 
+          responseData['live']
+        )
+      }
+      return res
+    }))
+  }
+
   //////////////////////////////////////////////////////    COURSES    //////////////////////////////////////////////////////
 }
 
 export class StudData{
-  private stuId: string = '┬─┬ノ( º _ ºノ)'
-  private name: string = '(╯°□°)╯︵ ┻━┻'
+  
   constructor(
+    
+    private stuId: string = '┬─┬ノ( º _ ºノ)',
+    private name: string = '(╯°□°)╯︵ ┻━┻',
     private email: string | null | undefined,
     private gpa: number = 2.98, 
-    private coursesID: string[] = []){}
+    private courses: StudCourseData[] = []){}
 
-  addCourse(courseID: string){
-    this.coursesID.push(courseID)
+  // addCourse(courseID: string){
+  //   this.courses.push(courseId)
+  // }
+  editGrade(grade: string, courseId: string){
+    for(let element in this.courses){
+      if(this.courses[element]['courseId'] == courseId){
+        this.courses[element]['grade'] = grade
+      }
+    }
   }
 }
 
@@ -202,6 +259,10 @@ export class StudCourseData{
   }
   getLive(): boolean{
     return this.live
+  }
+
+  setGrade(grade: string){
+    this.grade = grade
   }
   
 }

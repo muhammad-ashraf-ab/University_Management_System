@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router'
 import { Subject, Observable } from 'rxjs';
+// import { CookieService } from '@angular/platform-browser'
 
 import { initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, Auth, User } from '@angular/fire/auth';
@@ -14,10 +15,16 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, Auth, User 
 
 export class AuthenticationService {
   
-  private currFullUser = {} as User
+  private currFullUser: User | null = null
   private userLogState = new Subject<boolean>()
 
-  constructor(private router: Router, private httpClient: HttpClient, private firebaseAuth: Auth) {
+  constructor(
+    private router: Router, 
+    private httpClient: HttpClient, 
+    private firebaseAuth: Auth,
+    // private cookieService: CookieService,
+    ) {
+    console.log("Authentication Created!")
     this.initServ()
   }
 
@@ -76,7 +83,8 @@ export class AuthenticationService {
   }
 
   currUser(): User{
-    return this.currFullUser
+    // console.log("Someone asked for my user!: ", this.currFullUser)
+    return this.currFullUser!
   }
 
   logout(): boolean {

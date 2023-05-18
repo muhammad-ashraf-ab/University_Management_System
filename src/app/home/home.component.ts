@@ -16,7 +16,6 @@ export class HomeComponent implements OnInit{
   courses: StudCourseData[] = []
   recents: StudCourseData[] = []
 
-  private currUser: User
   constructor (
     private router: Router, 
     private route: ActivatedRoute, 
@@ -24,18 +23,18 @@ export class HomeComponent implements OnInit{
     private dbService: DbAccessService,
     private dfService: DummyFillerService
     ){
-    this.currUser = this.authService.currUser()
-
+    
   }
 
-
   ngOnInit(): void {
+    
     // this.authService.loggedIn().subscribe(logState => {
 
     // })
-    if(this.currUser.email !== null){
+    console.log("Home Init")
+    if(this.authService.currUser() !== null){
 
-      if(this.dfService.isInst(this.currUser.email)){
+      if(this.dfService.isInst(this.authService.currUser().email)){
         //Instructor!
         // this.dfService.dummyInstFillCurrent()
         // this.dfService.dummyInstCourseFillCurrent()
@@ -50,7 +49,7 @@ export class HomeComponent implements OnInit{
       }
       this.getMyCourses()
       // this.dfService.dummyCourseFillTwo()
-    }else{
+    } else {
       //not a user, route
       this.router.navigate(['login'])
     }
@@ -58,7 +57,7 @@ export class HomeComponent implements OnInit{
 
   // Universal Role function
   getMyCourses(){
-    if(this.dfService.isInst(this.currUser.email)){
+    if(this.dfService.isInst(this.authService.currUser().email)){
       this.dbService.fetchCurrInstCourses().subscribe((courses) =>{
         console.log(courses)
       },
@@ -78,6 +77,9 @@ export class HomeComponent implements OnInit{
     
   }
 
+  gotoCourse(cid: string){
+    this.router.navigate(['course', cid])
+  }
 
   //post the grade of a student as an inst
   postGrade(){

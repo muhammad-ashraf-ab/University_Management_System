@@ -27,6 +27,9 @@ export class LoginComponent implements OnInit{
     
   }
   ngOnInit(): void {
+    if(this.authService.currUser() !== null){
+      this.router.navigate(['home'])
+    }
     this.authService.loggedIn().subscribe(logState => {
       if(logState){
         this.router.navigate(['home'])
@@ -34,6 +37,7 @@ export class LoginComponent implements OnInit{
         this.router.navigate(['login'])
       }
     })
+
     // this.dbService.putStudents()
     this.dbService.fetchStudents()
   }

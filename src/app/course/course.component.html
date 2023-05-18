@@ -1,1 +1,10 @@
 <p>course works!</p>
+
+<div>
+    <label style="color:black"> Your Grade: </label><br>
+    <label style="color:black; border: 3px solid green"> {{grade}} </label>
+    <input type="text" [(ngModel)]="grade">
+    <button color="primary" class="loginFormInputSubmit" mat-raised-button type="submit" (click)="postGrade()">Modify</button>
+</div>
+
+<!-- <button (click)="postGrade()"></button> -->
