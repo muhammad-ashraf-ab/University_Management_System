@@ -1,1 +1,89 @@
-<p>registration works!</p>
+<p class="mat-h1" style="margin: 16px;">Courses</p>
+
+<table mat-table *ngIf="unregisteredCoursesDataSource" [dataSource]="unregisteredCoursesDataSource" class="mat-elevation-z8">
+    
+    <!-- Course Id Column -->
+    <ng-container matColumnDef="courseId">
+        <th mat-header-cell *matHeaderCellDef>Course ID</th>
+        <td mat-cell *matCellDef="let course"> {{ course.courseId }} </td>
+    </ng-container>
+
+    <!-- Course Name Column -->
+    <ng-container matColumnDef="courseName">
+        <th mat-header-cell *matHeaderCellDef>Course Name</th>
+        <td mat-cell *matCellDef="let course"> {{ course.courseName }} </td>
+    </ng-container>
+
+    <!-- Semester Column -->
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Semester</th>
+        <td mat-cell *matCellDef="let course">Not Taken</td>
+    </ng-container>
+
+    <!-- Number of Students Column -->
+    <ng-container matColumnDef="add">
+        <th mat-header-cell *matHeaderCellDef>Add</th>
+        <td mat-cell *matCellDef="let course">
+            <button style="background-color: #4caf50" mat-raised-button>Add</button>
+        </td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="displayedUnregisteredCoursesColumns"></tr>
+    <tr
+        mat-row
+        *matRowDef="let row; columns: displayedUnregisteredCoursesColumns;"
+        class="table-row"
+    ></tr>
+</table>
+<div *ngIf="unregisteredCoursesDataSource.length < 1" style="margin: 32px;">
+    <p class="mat-h2" style="text-align: center;">
+        No courses available to register. You registered everything there is, dude! Grats! 3a4 fa45.
+    </p>
+</div>
+
+<div style="margin: 64px">
+
+</div>
+
+<table mat-table *ngIf="registeredCoursesDataSource" [dataSource]="registeredCoursesDataSource" class="mat-elevation-z8">
+    
+    <!-- Course Id Column -->
+    <ng-container matColumnDef="courseId">
+        <th mat-header-cell *matHeaderCellDef>Course ID</th>
+        <td mat-cell *matCellDef="let course"> {{ course.courseId }} </td>
+    </ng-container>
+
+    <!-- Course Name Column -->
+    <ng-container matColumnDef="courseName">
+        <th mat-header-cell *matHeaderCellDef>Course Name</th>
+        <td mat-cell *matCellDef="let course"> {{ course.courseName }} </td>
+    </ng-container>
+
+    <!-- Semester Column -->
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let course">{{ course.grade == '' || course.grade == '-' ? 'Registered' : 'Completed' }}</td>
+    </ng-container>
+
+    <!-- Number of Students Column -->
+    <ng-container matColumnDef="addDrop">
+        <th mat-header-cell *matHeaderCellDef>Improve/Drop</th>
+        <td mat-cell *matCellDef="let course">
+            <button *ngIf="course.grade == '' || course.grade == '-'" color="warn" mat-raised-button>Drop</button>
+            <button *ngIf="!(course.grade == '' || course.grade == '-')" color="primary" mat-raised-button>Improve</button>
+        </td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="displayedRegisteredCoursesColumns"></tr>
+    <tr
+        mat-row
+        *matRowDef="let row; columns: displayedRegisteredCoursesColumns;"
+        class="table-row"
+    ></tr>
+</table>
+
+<div *ngIf="registeredCoursesDataSource.length < 1" style="margin: 32px;">
+    <p class="mat-h2" style="text-align: center;">
+        No courses registered. Welcome to hell! You have 5 years ahead of you.
+    </p>
+</div>

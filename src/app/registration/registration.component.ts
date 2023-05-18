@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../authentication.service';
 import { CourseData, DbAccessService, StudCourseData } from '../db-access.service';
 
@@ -9,21 +9,33 @@ import { CourseData, DbAccessService, StudCourseData } from '../db-access.servic
 })
 export class RegistrationComponent implements OnInit{
 
-  private unRegCourses: CourseData[] = []
-  private regCourses: StudCourseData[] = []
+  unregisteredCourses: CourseData[] = []
+  displayedUnregisteredCoursesColumns: string[] = ['courseId', 'courseName', 'status', 'add'];
+  unregisteredCoursesDataSource = this.unregisteredCourses;  
+  
+  registeredCourses: StudCourseData[] = [];
+  displayedRegisteredCoursesColumns: string[] = ['courseId', 'courseName', 'status', 'addDrop'];
+  registeredCoursesDataSource = this.registeredCourses;
+
   constructor(
     private authService: AuthenticationService,
     private dbService: DbAccessService,
+    private cdr: ChangeDetectorRef,
     
   ){}
   ngOnInit(): void {
     this.dbService.fetchUnregisteredCourses()
     .subscribe((courses) =>{
-      this.unRegCourses = courses
+      this.unregisteredCourses = courses
+      this.unregisteredCoursesDataSource = this.unregisteredCourses
+      this.cdr.detectChanges()
+      console.log("Unregistered courses: ", courses)
     })
     this.dbService.fetchCurrStudentCourses()
     .subscribe((courses) =>{
-      this.regCourses = courses
+      this.registeredCourses = courses
+      this.registeredCoursesDataSource = this.registeredCourses;
+      this.cdr.detectChanges();
     })
   }
 
