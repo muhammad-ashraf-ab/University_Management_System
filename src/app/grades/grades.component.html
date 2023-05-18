@@ -1,0 +1,35 @@
+<p class="mat-h1" style="margin: 16px;">Courses</p>
+<table mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8">
+    
+    <!-- Course Id Column -->
+    <ng-container matColumnDef="courseId">
+        <th mat-header-cell *matHeaderCellDef>Course ID</th>
+        <td mat-cell *matCellDef="let course"> {{ course.courseId }} </td>
+    </ng-container>
+
+    <!-- Course Name Column -->
+    <ng-container matColumnDef="courseName">
+        <th mat-header-cell *matHeaderCellDef>Course Name</th>
+        <td mat-cell *matCellDef="let course"> {{ course.courseName }} </td>
+    </ng-container>
+
+    <!-- Semester Column -->
+    <ng-container matColumnDef="semester">
+        <th mat-header-cell *matHeaderCellDef>Semester</th>
+        <td mat-cell *matCellDef="let course">{{ course.sem }}</td>
+    </ng-container>
+
+    <!-- Number of Students Column -->
+    <ng-container matColumnDef="grade">
+        <th mat-header-cell *matHeaderCellDef>Grade</th>
+        <td mat-cell *matCellDef="let course">{{ course.grade }}</td>
+    </ng-container>
+    
+    <tr mat-header-row *matHeaderRowDef="displayedCoursesColumns"></tr>
+    <tr
+        mat-row
+        *matRowDef="let row; columns: displayedCoursesColumns;"
+        [routerLink]="['/course', row.getCid()]"
+        class="table-row"
+    ></tr>
+</table>

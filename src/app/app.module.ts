@@ -17,6 +17,7 @@ import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CourseComponent } from './course/course.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { GradesComponent } from './grades/grades.component';
 
 
 
@@ -26,7 +27,8 @@ import { RegistrationComponent } from './registration/registration.component';
     LoginComponent,
     HomeComponent,
     CourseComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    GradesComponent
   ],
   imports: [
     BrowserModule,

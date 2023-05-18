@@ -53,7 +53,8 @@ export class AuthenticationService {
     })
   }
 
-  checkAuthUser(email: string, pass: string){
+  checkAuthUser(email: string, pass: string): Observable<any> {
+    let loginErrorObservable =  new Subject<any>()
     signInWithEmailAndPassword(this.firebaseAuth, email, pass)
     .then((userCredentials) =>{
       // Signed in!
@@ -61,20 +62,25 @@ export class AuthenticationService {
       // console.log(user)
   
       this.userLogState.next(true)
-      
     })
     .catch((error) =>{
+      const targetFrame = window.top?.frames[1]
+      const targetOrigin = "localhost/login"
       const errorCode = error.code
       if(errorCode == 'auth/invalid-email'){
         console.log("Email is literally wrong dude..")
+        loginErrorObservable.next(errorCode)
       }else if(errorCode == 'auth/wrong-password'){
         console.log("Ya 7ramy yabnel kalb")
+        loginErrorObservable.next(errorCode)
       }else if(errorCode == 'auth/user-not-found'){
         console.log('User isn\'t registered sadly :(')
+        loginErrorObservable.next(errorCode)
       }
       this.userLogState.next(false)
       this.currFullUser = {} as User
     })
+    return loginErrorObservable
   }
   // basically, this service will contact firebase to make sure the login auth is correct and give you a go do you!
 

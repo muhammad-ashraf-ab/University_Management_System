@@ -3,6 +3,7 @@ import { AuthenticationService } from '../authentication.service';
 import { CourseData, CourseStudData, DbAccessService, StudCourseData } from '../db-access.service';
 import { DummyFillerService } from '../dummy-filler.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-course',
@@ -19,7 +20,7 @@ export class CourseComponent implements OnInit{
   courseStudents: CourseStudData[] = [];
 
   displayedInstCoursesColumns: string[] = ['studentId', 'studentName', 'grade', 'edit'];
-  dataSource = this.courseStudents;
+  dataSource = new MatTableDataSource(this.courseStudents);
 
   constructor(
     private authService: AuthenticationService,
@@ -45,7 +46,7 @@ export class CourseComponent implements OnInit{
         this.dbService.fetchCourseInst(this.cid).subscribe((course) =>{
           this.course = course!
           this.courseStudents = course!.getSems()[0].studentList;
-          this.dataSource = this.courseStudents;
+          this.dataSource = new MatTableDataSource(this.courseStudents);
           this.cdr.detectChanges();
           console.log(this.dataSource);
         })
@@ -86,4 +87,9 @@ export class CourseComponent implements OnInit{
     }
   }
   
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
 }

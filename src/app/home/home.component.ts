@@ -4,6 +4,7 @@ import { AuthenticationService } from '../authentication.service'
 import { DummyFillerService } from '../dummy-filler.service'
 import { DbAccessService, StudCourseData, CourseData, Semester, StudData, InstData, InstCourseData, CourseInstData} from '../db-access.service'
 import { User } from '@angular/fire/auth'
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class HomeComponent implements OnInit{
   instCourses: CourseInstData[] = [];
 
   displayedInstCoursesColumns: string[] = ['courseId', 'courseName', 'semester', 'noOfStudents'];
-  dataSource = this.instCourses;
+  dataSource = new MatTableDataSource(this.instCourses);
 
   constructor (
     private router: Router, 
@@ -52,13 +53,14 @@ export class HomeComponent implements OnInit{
             const courseInstDataList = this.mapCourseDataToCourseInstData(course);
             this.instCourses.push(...courseInstDataList);
           }
-          this.dataSource = this.instCourses;
+          this.dataSource = new MatTableDataSource(this.instCourses);
           this.cdr.detectChanges();
         })
       }else{
-        //User!
+        //Student!
         // this.dfService.dummyStudFillCurrent()
         // this.dfService.dummyStudCourseFillCurrent()
+        this.dbService.fetchUnregisteredCourses()
         this.student = true;
       }
       this.getMyCourses()
@@ -120,6 +122,11 @@ export class HomeComponent implements OnInit{
       courseInstDataList.push(courseInstData);
     }
     return courseInstDataList;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
 }

@@ -21,4 +21,10 @@
         <br>
         <button color="primary" class="loginFormInputSubmit" mat-raised-button type="submit" [disabled]="!loginForm.valid">Login</button>
     </mat-card>
+    <mat-error *ngIf="loginErrorCode == 'auth/wrong-password'">
+        Wrong Password!
+    </mat-error>
+    <mat-error *ngIf="loginErrorCode == 'auth/user-not-found'">
+        User not Registered :(
+    </mat-error>
 </form>

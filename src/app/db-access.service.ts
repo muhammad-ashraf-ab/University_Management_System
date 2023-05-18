@@ -59,14 +59,38 @@ export class DbAccessService {
       }
       return res
     }))
-    // there isn't even a return type lmao?....fucked, this is so.
-    // eksdee
+    
   }
 
   fetchStudents(){
     this.httpClient.get(dbLink + "/students.json").subscribe(userList =>{
       // console.log(userList)
     })
+  }
+
+  fetchUnregisteredCourses(): Observable<CourseData[]>{
+    // let user = this.authService.currUser()
+    let mySubject = new Subject<CourseData[]>
+    this.fetchCurrStudentCourses().subscribe((courses) =>{
+      this.fetchAllCourses().subscribe((allCourses) =>{
+        let result: CourseData[] = []
+        for (let cd in allCourses){
+          let take = true
+          for(let scd in courses){
+            if(allCourses[cd].getCid() == courses[scd].getCid()){
+              take = false
+              break
+            }
+          }
+          if(take){
+            result.push(allCourses[cd])
+          }
+        }
+        console.log(result)
+        mySubject.next(result)
+      })
+    })
+    return mySubject
   }
   
   //////////////////////////////////////////////////////    STUDENT    //////////////////////////////////////////////////////
@@ -101,8 +125,6 @@ export class DbAccessService {
       return res
     }))
 
-    // there isn't even a return type lmao?....fucked, this is so.
-    // eksdee
   }
 
   
@@ -227,6 +249,22 @@ export class DbAccessService {
     }))
   }
 
+  fetchAllCourses(){
+    return this.httpClient.get <{ [key: string]: CourseData }> (dbLink + "/courses.json")
+    .pipe(map(responseData =>{
+      let res: CourseData[] = []
+      for(let key in responseData){
+        res.push(
+          new CourseData(
+            key,
+            responseData[key]['courseName'],
+            responseData[key]['sems']
+          )
+        )
+      }
+      return res
+    }))
+  }
   //////////////////////////////////////////////////////    COURSES    //////////////////////////////////////////////////////
 }
 

@@ -32,7 +32,10 @@
     </mat-card>
 
     <p class="mat-h1" style="margin: 16px;">Students</p>
-    <table mat-table *ngIf="dataSource.length > 0" [dataSource]="dataSource" class="mat-elevation-z8">
+    <mat-form-field>
+        <input (keyup)="applyFilter($event)" matInput placeholder="Filter">
+    </mat-form-field>
+    <table mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8">
         
         <!-- Student Id Column -->
         <ng-container matColumnDef="studentId">

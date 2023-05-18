@@ -27,7 +27,7 @@
     <mat-nav-list>
       <a mat-list-item>Dashboard</a>
       <a mat-list-item>Courses</a>
-      <a mat-list-item *ngIf="student">Grades</a>
+      <a mat-list-item *ngIf="student" routerLink="/grades" (click)="opened=false">Grades</a>
       <mat-list-item>
         <mat-icon matListItemIcon style="color: #F44336">logout</mat-icon>
         <a (click)="logout(); opened=false" id="logoutButton">Logout</a>
@@ -40,3 +40,7 @@
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<div style="padding: 64px; background-color: black;">
+  <p class="mat-body-strong" style="text-align:center; color:#E0E0E0">All Rights Reserved©</p>
+</div>

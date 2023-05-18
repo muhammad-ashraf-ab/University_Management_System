@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit{
     emailFormControl: new FormControl('', [Validators.required, Validators.email]),
     passwordFormControl: new FormControl('', [Validators.required]),
   })
-  
+  loginErrorCode: string = ''
   constructor(
     private router: Router, 
     private authService: AuthenticationService, 
@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit{
     
   }
   ngOnInit(): void {
+    this.loginErrorCode = ''
     if(this.authService.currUser() !== null){
       this.router.navigate(['home'])
     }
@@ -53,6 +54,9 @@ export class LoginComponent implements OnInit{
     let userPass = this.loginForm.value.passwordFormControl;
     if(userEmail != '' && userPass != ''){
       this.authService.checkAuthUser(userEmail!, userPass!)
+      .subscribe((errorCode) =>{
+        this.loginErrorCode = errorCode
+      })
     }
     // this.router.navigate(['home'])
   }
